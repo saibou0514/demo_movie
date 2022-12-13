@@ -33,8 +33,14 @@ public class MovieController {
 	}
 
 	@PostMapping(value = "/api/reviseMovieInfo")
-	public MovieRes reviseMovieInfo(MovieReq movieReq) {
-		
+	public MovieRes reviseMovieInfo(@RequestBody MovieReq movieReq) {
+		if (!StringUtils.hasText(movieReq.getMovieCode()) || !StringUtils.hasText(movieReq.getMovieName())
+				|| !StringUtils.hasText(movieReq.getDay()) || !StringUtils.hasText(movieReq.getType())) {
+			return new MovieRes(MovieRtnCode.PARAMS_ERROR.getMessage());
+		}
+		if (movieReq.getPrice() <= 0 ) {
+			return new MovieRes(MovieRtnCode.PARAMS_ERROR.getMessage());
+		}
 		
 		
 		return movieService.reviseMovieInfo(movieReq);
